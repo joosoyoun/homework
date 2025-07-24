@@ -1,240 +1,97 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>숙제 제출</title>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
   <style>
-    body {
-      background: #fff0f6;
-      font-family: 'Noto Sans KR', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 700px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 4px 24px rgba(255, 192, 203, 0.2);
-      padding: 40px 30px 30px 30px;
-    }
-    .title {
-      background: #ffb6d5;
-      color: #fff;
-      font-size: 2rem;
-      font-weight: bold;
-      border-radius: 20px;
-      padding: 16px 32px;
-      display: inline-block;
-      margin-bottom: 30px;
-    }
-    .top-form {
-      margin-bottom: 40px;
-      text-align: center;
-    }
-    .problem-img {
-      display: block;
-      margin: 0 auto 20px auto;
-      max-width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(255, 182, 213, 0.15);
-    }
-    .answer-form {
-      margin-bottom: 50px;
-      background: #ffe4f0;
-      border-radius: 16px;
-      padding: 30px 20px 20px 20px;
-      box-shadow: 0 2px 8px rgba(255, 182, 213, 0.08);
-    }
-    .label {
-      font-size: 1.1rem;
-      font-weight: 500;
-      margin-bottom: 10px;
-      display: block;
-      color: #d63384;
-    }
-    .input, .textarea {
-      width: 100%;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      border: 1.5px solid #ffb6d5;
-      padding: 12px;
-      margin-bottom: 18px;
-      background: #fff;
-      box-sizing: border-box;
-      resize: none;
-    }
-    .textarea {
-      min-height: 120px;
-      height: 180px;
-      max-height: 400px;
-    }
-    .submit-btn {
-      background: #ffb6d5;
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 32px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .submit-btn:hover {
-      background: #d63384;
-    }
-    .confirmation {
-      color: #d63384;
-      font-weight: bold;
-      margin-top: 10px;
-      font-size: 1.1rem;
-      display: none;
-    }
-    .pad-wrap {
-      position: relative;
-      margin-bottom: 18px;
-    }
-    .drawpad {
-      border: 2px solid #ffb6d5;
-      border-radius: 10px;
-      background: #fff;
-      width: 100%;
-      height: 200px;
-      touch-action: none;
-      display: block;
-      margin: 0 auto 8px auto;
-    }
-    .clear-btn {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      background: #fff0f6;
-      color: #d63384;
-      border: 1px solid #ffb6d5;
-      border-radius: 6px;
-      padding: 4px 16px;
-      font-size: 1rem;
-      cursor: pointer;
-      z-index: 2;
-    }
-    .clear-btn:hover {
-      background: #ffb6d5;
-      color: #fff;
-    }
+    body { background: #fff0f6; font-family: 'Noto Sans KR', sans-serif; margin: 0; padding: 0; }
+    .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(255, 192, 203, 0.2); padding: 40px 30px 30px 30px; }
+    .title { background: #ffb6d5; color: #fff; font-size: 2rem; font-weight: bold; border-radius: 20px; padding: 16px 32px; display: inline-block; margin-bottom: 30px; }
+    .top-form { margin-bottom: 40px; text-align: center; }
+    .problem-img { display: block; margin: 0 auto 20px auto; max-width: 100%; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 182, 213, 0.15); }
+    .answer-form { margin-bottom: 50px; background: #ffe4f0; border-radius: 16px; padding: 30px 20px 20px 20px; box-shadow: 0 2px 8px rgba(255, 182, 213, 0.08); }
+    .label { font-size: 1.1rem; font-weight: 500; margin-bottom: 10px; display: block; color: #d63384; }
+    .input, .textarea { width: 100%; font-size: 1.1rem; border-radius: 8px; border: 1.5px solid #ffb6d5; padding: 12px; margin-bottom: 18px; background: #fff; box-sizing: border-box; resize: none; }
+    .textarea { min-height: 120px; height: 180px; max-height: 400px; }
+    .submit-btn { background: #ffb6d5; color: #fff; font-size: 1.1rem; font-weight: bold; border: none; border-radius: 8px; padding: 12px 32px; cursor: pointer; transition: background 0.2s; }
+    .submit-btn:hover { background: #d63384; }
+    .confirmation { color: #d63384; font-weight: bold; margin-top: 10px; font-size: 1.1rem; display: none; }
+    .pad-wrap { position: relative; margin-bottom: 18px; }
+    .drawpad { border: 2px solid #ffb6d5; border-radius: 10px; background: #fff; width: 100%; height: 200px; touch-action: none; display: block; margin: 0 auto 8px auto; }
+    .clear-btn { position: absolute; right: 10px; top: 10px; background: #fff0f6; color: #d63384; border: 1px solid #ffb6d5; border-radius: 6px; padding: 4px 16px; font-size: 1rem; cursor: pointer; z-index: 2; }
+    .clear-btn:hover { background: #ffb6d5; color: #fff; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="title">숙제 제출</div>
-    <form class="top-form" id="topForm" onsubmit="return false;">
+    <form class="top-form" onsubmit="return false;">
       <label class="label" for="student_name">이름</label>
-      <input class="input" type="text" id="student_name" name="student_name" required placeholder="이름을 입력하세요">
+      <input class="input" type="text" id="student_name" required placeholder="이름을 입력하세요" />
     </form>
-    <form class="answer-form" id="form1">
-      <img src="problem1.png" alt="문제 1" class="problem-img">
-      <label class="label" for="answer1">정답</label>
-      <input class="input" type="text" id="answer1" name="answer" required placeholder="정답을 입력하세요">
-      <label class="label">풀이 (그림판)</label>
-      <div class="pad-wrap"><canvas class="drawpad" id="pad1" width="600" height="200"></canvas>
-      <button type="button" class="clear-btn" data-pad="1">지우기</button></div>
-      <button class="submit-btn" type="submit">제출</button>
-      <div class="confirmation" id="confirmation1">제출되었습니다!</div>
-    </form>
-    <form class="answer-form" id="form2">
-      <img src="problem2.png" alt="문제 2" class="problem-img">
-      <label class="label" for="answer2">정답</label>
-      <input class="input" type="text" id="answer2" name="answer" required placeholder="정답을 입력하세요">
-      <label class="label">풀이 (그림판)</label>
-      <div class="pad-wrap"><canvas class="drawpad" id="pad2" width="600" height="200"></canvas>
-      <button type="button" class="clear-btn" data-pad="2">지우기</button></div>
-      <button class="submit-btn" type="submit">제출</button>
-      <div class="confirmation" id="confirmation2">제출되었습니다!</div>
-    </form>
-    <form class="answer-form" id="form3">
-      <img src="problem3.png" alt="문제 3" class="problem-img">
-      <label class="label" for="answer3">정답</label>
-      <input class="input" type="text" id="answer3" name="answer" required placeholder="정답을 입력하세요">
-      <label class="label">풀이 (그림판)</label>
-      <div class="pad-wrap"><canvas class="drawpad" id="pad3" width="600" height="200"></canvas>
-      <button type="button" class="clear-btn" data-pad="3">지우기</button></div>
-      <button class="submit-btn" type="submit">제출</button>
-      <div class="confirmation" id="confirmation3">제출되었습니다!</div>
-    </form>
-    <form class="answer-form" id="form4">
-      <img src="problem4.png" alt="문제 4" class="problem-img">
-      <label class="label" for="answer4">정답</label>
-      <input class="input" type="text" id="answer4" name="answer" required placeholder="정답을 입력하세요">
-      <label class="label">풀이 (그림판)</label>
-      <div class="pad-wrap"><canvas class="drawpad" id="pad4" width="600" height="200"></canvas>
-      <button type="button" class="clear-btn" data-pad="4">지우기</button></div>
-      <button class="submit-btn" type="submit">제출</button>
-      <div class="confirmation" id="confirmation4">제출되었습니다!</div>
-    </form>
-    <form class="answer-form" id="form5">
-      <img src="problem5.png" alt="문제 5" class="problem-img">
-      <label class="label" for="answer5">정답</label>
-      <input class="input" type="text" id="answer5" name="answer" required placeholder="정답을 입력하세요">
-      <label class="label">풀이 (그림판)</label>
-      <div class="pad-wrap"><canvas class="drawpad" id="pad5" width="600" height="200"></canvas>
-      <button type="button" class="clear-btn" data-pad="5">지우기</button></div>
-      <button class="submit-btn" type="submit">제출</button>
-      <div class="confirmation" id="confirmation5">제출되었습니다!</div>
-    </form>
-    <form class="answer-form" id="form6">
-      <img src="problem6.png" alt="문제 6" class="problem-img">
-      <label class="label" for="answer6">정답</label>
-      <input class="input" type="text" id="answer6" name="answer" required placeholder="정답을 입력하세요">
-      <label class="label">풀이 (그림판)</label>
-      <div class="pad-wrap"><canvas class="drawpad" id="pad6" width="600" height="200"></canvas>
-      <button type="button" class="clear-btn" data-pad="6">지우기</button></div>
-      <button class="submit-btn" type="submit">제출</button>
-      <div class="confirmation" id="confirmation6">제출되었습니다!</div>
-    </form>
+
+    <!-- 문제 1~6 반복 -->
+    <script>
+      const problemCount = 6;
+      document.write([...Array(problemCount)].map((_, i) => {
+        const idx = i + 1;
+        return `
+        <form class="answer-form" id="form${idx}">
+          <img src="problem${idx}.png" alt="문제 ${idx}" class="problem-img">
+          <label class="label" for="answer${idx}">정답</label>
+          <input class="input" type="text" id="answer${idx}" required placeholder="정답을 입력하세요">
+          <label class="label">풀이 (그림판)</label>
+          <div class="pad-wrap">
+            <canvas class="drawpad" id="pad${idx}" width="600" height="200"></canvas>
+            <button type="button" class="clear-btn" data-pad="${idx}">지우기</button>
+          </div>
+          <button class="submit-btn" type="submit">제출</button>
+          <div class="confirmation" id="confirmation${idx}">제출되었습니다!</div>
+        </form>`;
+      }).join(''));
+    </script>
   </div>
+
   <script>
-    (function() {
-      emailjs.init('wLE5l2YjXRubD8MjC'); // Your EmailJS public key
+    // ✅ EmailJS 초기화
+    (function () {
+      emailjs.init('wLE5l2YjXRubD8MjC'); // 본인 EmailJS Public Key
     })();
 
     function getStudentName() {
       return document.getElementById('student_name').value;
     }
 
-    
-    function sendForm(formId, confirmationId) {
-  const name = document.getElementById('student_name').value;
-  const answers = [];
+    function sendForm(dataObj, confirmationId) {
+      const templateParams = {
+        student_name: dataObj.student_name,
+        answers: `
+정답: ${dataObj.answers}
 
+풀이 이미지:
+<img src="${dataObj.solution}" style="max-width: 100%;" />
+        `
+      };
 
-    const answer = problem.querySelector('.answer').value;
-    const canvas = problem.querySelector('.drawpad');
-    const image = canvas.toDataURL('image/png');
-    answers.push({ answer, image });
+      emailjs.send('problem', 'template_65k6mg6', templateParams)
+        .then(() => {
+          document.getElementById(confirmationId).style.display = 'block';
+        })
+        .catch(error => {
+          alert('❌ 메일 전송에 실패했습니다.');
+          console.error(error);
+        });
+    }
 
-
-  const templateParams = {
-    student_name: name,
-    answers: JSON.stringify(answers, null, 2)
-  };
-
-  emailjs.send('problem', 'template_65k6mg6', templateParams)
-    .then(function(response) {
-      document.getElementById(confirmationId).style.display = 'block';
-    }, function(error) {
-      alert('❌ 메일 전송에 실패했습니다. 다시 시도해 주세요.');
-      console.error(error);
-    });
-}
-
-
-    // Drawing pad logic
+    // 🖌 그림판 초기화
     function setupPad(padId) {
       const canvas = document.getElementById('pad' + padId);
       const ctx = canvas.getContext('2d');
       let drawing = false;
       let lastX = 0, lastY = 0;
+
       function getXY(e) {
         if (e.touches) {
           const rect = canvas.getBoundingClientRect();
@@ -243,14 +100,9 @@
           return [e.offsetX, e.offsetY];
         }
       }
-      canvas.addEventListener('mousedown', e => {
-        drawing = true;
-        [lastX, lastY] = getXY(e);
-      });
-      canvas.addEventListener('touchstart', e => {
-        drawing = true;
-        [lastX, lastY] = getXY(e);
-      });
+
+      canvas.addEventListener('mousedown', e => { drawing = true; [lastX, lastY] = getXY(e); });
+      canvas.addEventListener('touchstart', e => { drawing = true; [lastX, lastY] = getXY(e); });
       canvas.addEventListener('mousemove', e => {
         if (!drawing) return;
         const [x, y] = getXY(e);
@@ -276,18 +128,23 @@
         ctx.stroke();
         [lastX, lastY] = [x, y];
       }, { passive: false });
+
       canvas.addEventListener('mouseup', () => drawing = false);
       canvas.addEventListener('mouseleave', () => drawing = false);
       canvas.addEventListener('touchend', () => drawing = false);
-      // Clear button
-      document.querySelector('.clear-btn[data-pad="' + padId + '"]').addEventListener('click', function() {
+
+      // 지우기 버튼
+      document.querySelector(`.clear-btn[data-pad="${padId}"]`).addEventListener('click', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       });
     }
-    for (let i = 1; i <= 6; i++) setupPad(i);
 
-    for (let i = 1; i <= 6; i++) {
-      document.getElementById('form' + i).addEventListener('submit', function(e) {
+    // 초기화
+    for (let i = 1; i <= problemCount; i++) setupPad(i);
+
+    // 제출 이벤트 등록
+    for (let i = 1; i <= problemCount; i++) {
+      document.getElementById('form' + i).addEventListener('submit', function (e) {
         e.preventDefault();
         const student_name = getStudentName();
         if (!student_name) {
@@ -295,19 +152,18 @@
           document.getElementById('student_name').focus();
           return;
         }
+
         const answer = document.getElementById('answer' + i).value;
         const pad = document.getElementById('pad' + i);
         const solutionImg = pad.toDataURL('image/png');
-       
-        
-const templateParams = {
-  student_name: dataObj.student_name, // ✔️ 템플릿에 있음
-  answers: dataObj.solutionInfo       // ✔️ 템플릿에 있음
-};
 
-       
+        sendForm({
+          student_name,
+          answers: answer,
+          solution: solutionImg
+        }, 'confirmation' + i);
       });
     }
   </script>
 </body>
-</html> 
+</html>
