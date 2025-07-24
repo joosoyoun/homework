@@ -202,14 +202,32 @@
       return document.getElementById('student_name').value;
     }
 
-    function sendForm(formId, templateParams, confirmationId) {
-      emailjs.send('problem', 'template_65k6mg6', templateParams)
-        .then(function(response) {
-          document.getElementById(confirmationId).style.display = 'block';
-        }, function(error) {
-          alert('메일 전송에 실패했습니다. 다시 시도해 주세요.');
-        });
-    }
+    
+    function sendForm(formId, confirmationId) {
+  const name = document.getElementById('student_name').value;
+  const answers = [];
+
+  document.querySelectorAll('.problem').forEach((problem, idx) => {
+    const answer = problem.querySelector('.answer').value;
+    const canvas = problem.querySelector('.drawpad');
+    const image = canvas.toDataURL('image/png');
+    answers.push({ answer, image });
+  });
+
+  const templateParams = {
+    student_name: name,
+    answers: JSON.stringify(answers, null, 2)
+  };
+
+  emailjs.send('problem', 'template_65k6mg6', templateParams)
+    .then(function(response) {
+      document.getElementById(confirmationId).style.display = 'block';
+    }, function(error) {
+      alert('❌ 메일 전송에 실패했습니다. 다시 시도해 주세요.');
+      console.error(error);
+    });
+}
+
 
     // Drawing pad logic
     function setupPad(padId) {
