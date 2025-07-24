@@ -207,7 +207,7 @@
   const name = document.getElementById('student_name').value;
   const answers = [];
 
-  document.querySelectorAll('.problem').forEach((problem, idx) => {
+
     const answer = problem.querySelector('.answer').value;
     const canvas = problem.querySelector('.drawpad');
     const image = canvas.toDataURL('image/png');
@@ -298,12 +298,14 @@
         const answer = document.getElementById('answer' + i).value;
         const pad = document.getElementById('pad' + i);
         const solutionImg = pad.toDataURL('image/png');
-        sendForm('form' + i, {
-          student_name,
-          answers: answer,
-          solution: solutionImg,
-          title: `문제 ${i} 제출`
-        }, 'confirmation' + i);
+       
+        
+const templateParams = {
+  student_name: dataObj.student_name, // ✔️ 템플릿에 있음
+  answers: dataObj.solutionInfo       // ✔️ 템플릿에 있음
+};
+
+       
       });
     }
   </script>
