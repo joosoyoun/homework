@@ -14,7 +14,6 @@
     .answer-form { margin-bottom: 50px; background: #ffe4f0; border-radius: 16px; padding: 30px 20px 20px 20px; box-shadow: 0 2px 8px rgba(255, 182, 213, 0.08); }
     .label { font-size: 1.1rem; font-weight: 500; margin-bottom: 10px; display: block; color: #d63384; }
     .input, .textarea { width: 100%; font-size: 1.1rem; border-radius: 8px; border: 1.5px solid #ffb6d5; padding: 12px; margin-bottom: 18px; background: #fff; box-sizing: border-box; resize: none; }
-    .textarea { min-height: 120px; height: 180px; max-height: 400px; }
     .submit-btn { background: #ffb6d5; color: #fff; font-size: 1.1rem; font-weight: bold; border: none; border-radius: 8px; padding: 12px 32px; cursor: pointer; transition: background 0.2s; }
     .submit-btn:hover { background: #d63384; }
     .confirmation { color: #d63384; font-weight: bold; margin-top: 10px; font-size: 1.1rem; display: none; }
@@ -32,7 +31,6 @@
       <input class="input" type="text" id="student_name" required placeholder="이름을 입력하세요" />
     </form>
 
-    <!-- 문제 1~6 반복 -->
     <script>
       const problemCount = 6;
       document.write([...Array(problemCount)].map((_, i) => {
@@ -55,9 +53,8 @@
   </div>
 
   <script>
-    // ✅ EmailJS 초기화
     (function () {
-      emailjs.init('wLE5l2YjXRubD8MjC'); // 본인 EmailJS Public Key
+      emailjs.init('wLE5l2YjXRubD8MjC'); // 본인 EmailJS public key
     })();
 
     function getStudentName() {
@@ -85,7 +82,6 @@
         });
     }
 
-    // 🖌 그림판 초기화
     function setupPad(padId) {
       const canvas = document.getElementById('pad' + padId);
       const ctx = canvas.getContext('2d');
@@ -93,17 +89,15 @@
       let lastX = 0, lastY = 0;
 
       function getXY(e) {
+        const rect = canvas.getBoundingClientRect();
         if (e.touches) {
-          const rect = canvas.getBoundingClientRect();
           return [e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top];
         } else {
           return [e.offsetX, e.offsetY];
         }
       }
 
-      canvas.addEventListener('mousedown', e => { drawing = true; [lastX, lastY] = getXY(e); });
-      canvas.addEventListener('touchstart', e => { drawing = true; [lastX, lastY] = getXY(e); });
-      canvas.addEventListener('mousemove', e => {
+      function draw(e) {
         if (!drawing) return;
         const [x, y] = getXY(e);
         ctx.lineWidth = 3;
@@ -114,36 +108,42 @@
         ctx.lineTo(x, y);
         ctx.stroke();
         [lastX, lastY] = [x, y];
-      });
-      canvas.addEventListener('touchmove', e => {
-        if (!drawing) return;
-        e.preventDefault();
-        const [x, y] = getXY(e);
-        ctx.lineWidth = 3;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#d63384';
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(x, y);
-        ctx.stroke();
-        [lastX, lastY] = [x, y];
-      }, { passive: false });
+      }
 
+      // Mouse
+      canvas.addEventListener('mousedown', e => {
+        drawing = true;
+        [lastX, lastY] = getXY(e);
+      });
+      canvas.addEventListener('mousemove', draw);
       canvas.addEventListener('mouseup', () => drawing = false);
       canvas.addEventListener('mouseleave', () => drawing = false);
-      canvas.addEventListener('touchend', () => drawing = false);
 
-      // 지우기 버튼
+      // Touch
+      canvas.addEventListener('touchstart', e => {
+        e.preventDefault(); // 중요
+        drawing = true;
+        [lastX, lastY] = getXY(e);
+      }, { passive: false });
+
+      canvas.addEventListener('touchmove', e => {
+        if (!drawing) return;
+        e.preventDefault(); // 중요
+        draw(e);
+      }, { passive: false });
+
+      canvas.addEventListener('touchend', () => drawing = false);
+      canvas.addEventListener('touchcancel', () => drawing = false);
+
+      // Clear 버튼
       document.querySelector(`.clear-btn[data-pad="${padId}"]`).addEventListener('click', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       });
     }
 
-    // 초기화
-    for (let i = 1; i <= problemCount; i++) setupPad(i);
+    for (let i = 1; i <= 6; i++) setupPad(i);
 
-    // 제출 이벤트 등록
-    for (let i = 1; i <= problemCount; i++) {
+    for (let i = 1; i <= 6; i++) {
       document.getElementById('form' + i).addEventListener('submit', function (e) {
         e.preventDefault();
         const student_name = getStudentName();
